@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="690" viewBox="0 0 980 690" font-family="DejaVu Sans, Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="ahB" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#1A73E8"/></marker>
+    <marker id="ahG" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#188038"/></marker>
+    <marker id="ahR" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#D93025"/></marker>
+  </defs>
+
+  <rect width="980" height="690" fill="#FFFFFF"/>
+  <text x="490" y="38" text-anchor="middle" font-size="19" font-weight="bold" fill="#202124">Tương tác giữa các task và semaphore</text>
+
+  <!-- TASK PRODUCER -->
+  <rect x="30" y="70" width="280" height="205" rx="10" fill="#E8F0FE" stroke="#1A73E8" stroke-width="2"/>
+  <text x="48" y="98"  font-size="17" font-weight="bold" fill="#1A73E8">Task Producer</text>
+  <text x="48" y="118" font-size="11.5" fill="#5F6368">priority 2  ·  chu kỳ 2000 ms</text>
+  <text x="48" y="148" font-size="13" fill="#202124">1.  xSemaphoreTake(xMutexSerial)</text>
+  <text x="48" y="172" font-size="13" fill="#202124">2.  shared_value++ , in Serial</text>
+  <text x="48" y="196" font-size="13" fill="#202124">3.  xSemaphoreGive(xMutexSerial)</text>
+  <text x="48" y="220" font-size="13" fill="#202124">4.  xSemaphoreGive(binary sem)</text>
+  <text x="48" y="250" font-size="11.5" fill="#5F6368">vTaskDelay(2000 ms) rồi lặp lại</text>
+
+  <!-- TASK CONSUMER -->
+  <rect x="670" y="70" width="280" height="205" rx="10" fill="#E6F4EA" stroke="#188038" stroke-width="2"/>
+  <text x="688" y="98"  font-size="17" font-weight="bold" fill="#188038">Task Consumer</text>
+  <text x="688" y="118" font-size="11.5" fill="#5F6368">priority 3  ·  block chờ tín hiệu</text>
+  <text x="688" y="148" font-size="13" fill="#202124">5.  xSemaphoreTake(binary sem)</text>
+  <text x="688" y="172" font-size="13" fill="#202124">6.  xSemaphoreTake(xMutexSerial)</text>
+  <text x="688" y="196" font-size="13" fill="#202124">7.  đọc shared_value , in Serial</text>
+  <text x="688" y="220" font-size="13" fill="#202124">8.  xSemaphoreGive(xMutexSerial)</text>
+  <text x="688" y="250" font-size="11.5" fill="#5F6368">quay lại chờ tín hiệu kế tiếp</text>
+
+  <!-- BINARY SEMAPHORE -->
+  <rect x="375" y="100" width="230" height="95" rx="10" fill="#FEF7E0" stroke="#F9AB00" stroke-width="2"/>
+  <text x="490" y="128" text-anchor="middle" font-size="16" font-weight="bold" fill="#B06000">Binary Semaphore</text>
+  <text x="490" y="150" text-anchor="middle" font-size="12.5" fill="#202124">xBinarySemaphoreData</text>
+  <text x="490" y="176" text-anchor="middle" font-size="11.5" fill="#5F6368">đồng bộ: báo có dữ liệu mới</text>
+
+  <line x1="310" y1="147" x2="371" y2="147" stroke="#1A73E8" stroke-width="2.5" marker-end="url(#ahB)"/>
+  <text x="341" y="137" text-anchor="middle" font-size="12" font-weight="bold" fill="#1A73E8">4 GIVE</text>
+
+  <line x1="605" y1="147" x2="666" y2="147" stroke="#188038" stroke-width="2.5" marker-end="url(#ahG)"/>
+  <text x="637" y="137" text-anchor="middle" font-size="12" font-weight="bold" fill="#188038">5 TAKE</text>
+
+  <text x="490" y="310" text-anchor="middle" font-size="12" fill="#5F6368">Consumer block tại bước 5, được đánh thức khi Producer GIVE ở bước 4</text>
+
+  <!-- MUTEX -->
+  <rect x="375" y="380" width="230" height="95" rx="10" fill="#FCE8E6" stroke="#D93025" stroke-width="2"/>
+  <text x="490" y="408" text-anchor="middle" font-size="16" font-weight="bold" fill="#C5221F">Mutex</text>
+  <text x="490" y="430" text-anchor="middle" font-size="12.5" fill="#202124">xMutexSerial</text>
+  <text x="490" y="456" text-anchor="middle" font-size="11.5" fill="#5F6368">loại trừ truy cập đồng thời</text>
+
+  <path d="M170,275 L170,427 L371,427" fill="none" stroke="#1A73E8" stroke-width="2.5" marker-end="url(#ahB)"/>
+  <text x="182" y="352" font-size="12" font-weight="bold" fill="#1A73E8">1 TAKE  /  3 GIVE</text>
+
+  <path d="M810,275 L810,427 L609,427" fill="none" stroke="#188038" stroke-width="2.5" marker-end="url(#ahG)"/>
+  <text x="798" y="352" text-anchor="end" font-size="12" font-weight="bold" fill="#188038">6 TAKE  /  8 GIVE</text>
+
+  <line x1="490" y1="475" x2="490" y2="521" stroke="#D93025" stroke-width="2.5" marker-end="url(#ahR)"/>
+  <text x="502" y="503" font-size="12" fill="#C5221F">bảo vệ</text>
+
+  <!-- SHARED RESOURCE -->
+  <rect x="320" y="525" width="340" height="110" rx="10" fill="#F1F3F4" stroke="#5F6368" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="490" y="553" text-anchor="middle" font-size="15" font-weight="bold" fill="#202124">Tài nguyên dùng chung</text>
+  <text x="490" y="578" text-anchor="middle" font-size="12.5" fill="#202124">Serial  (USB CDC)</text>
+  <text x="490" y="600" text-anchor="middle" font-size="12.5" fill="#202124">biến toàn cục  shared_value</text>
+  <text x="490" y="623" text-anchor="middle" font-size="11.5" fill="#5F6368">chỉ 1 task được dùng tại một thời điểm</text>
+</svg>
